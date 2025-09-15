@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guess the Number</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Guess the Number</h1>
+    <h3>You have 7 attempts.</h3>
+    <input type="number" name="guess" id="guess">
+    <button id="submit" onclick="checkGuess()">submit</button>
+    <button onclick="resetGame()" id="play-again">Play Again</button>
+    <div id="popup"></div>
+    <div id="guesses"></div>
+    <script>
+        let randomNumber = Math.floor(Math.random() * 100) + 1;
+        let attempts= 7;
+        function checkGuess() {
+            const input= document.getElementById('guess').value.trim();
+            const userGuess = Number(input);
+            if (isNaN(userGuess) || userGuess<1 || userGuess>100 || input===""){
+                alert("Enter a valid number please :( ");
+                return;
+            }else
+            {
+                if (userGuess == randomNumber){
+                    const p=document.createElement("p");
+                    p.innerText= "You Won!!! IT'S " + randomNumber + "!!!!";
+                    document.getElementById('popup').appendChild(p);
+                    endGame();
+                } else if (userGuess < randomNumber) {
+                    document.getElementById('guess').value = "";
+                    attempts--;
+                    const p= document.createElement("p");
+                    p.innerText= "You guessed "+ userGuess+ " -> Go Higher!"+ " You have "+ attempts + " attempts left";
+                    document.getElementById("guesses").appendChild(p);
+                } else {
+                    document.getElementById('guess').value = "";
+                    attempts--;
+                    const p=document.createElement("p");
+                    p.innerText= "You guessed "+ userGuess+ " -> Go Lower!"+ " You have "+ attempts + " attempts left";
+                    document.getElementById("guesses").appendChild(p);
+                }
+                if(attempts === 0){
+                    const p = document.createElement("p");
+                    p.innerText = "Game Over! The number was" + randomNumber;
+                    document.getElementById("popup").appendChild(p);
+                    endGame();
+                }
+            }
+        }
+        function endGame() {
+            document.getElementById('guess').disabled = true;
+            document.querySelector('#submit').disabled = true;
+        }
+        function resetGame() {
+            randomNumber=Math.floor(Math.random()*100)+1;
+            attempts = 7;
+            document.getElementById('guess').disabled=false;
+            document.querySelector('#submit').disabled=false;
+            document.getElementById('guess').value="";
+            document.getElementById('guesses').innerHTML="";
+            document.getElementById('popup').innerHTML="";
+        }
+    </script>
+</body>
+</html>
